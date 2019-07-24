@@ -1,9 +1,9 @@
-import React, { FC, Fragment, useEffect, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 
 import ProcessingSearch from "../ProcessingSearch";
 import HandlerErr from "../HandlerErr";
-import Loding from "../Loding";
+import Loading from "../Loading";
 import objCheckURL from "../../Containers/Class/CheckURL";
 import objProcesRequest from "../../Containers/Class/ProcessingRequest";
 import { faceProduct } from "../../Type/Interface";
@@ -40,16 +40,16 @@ const CategorySearch: FC<RouteComponentProps<{ PageList: string }>> = ({
   if (resError !== "") {
     return <HandlerErr error={resError} />;
   } else if (!arrProd.length) {
-    return <Loding />;
+    return <Loading />;
   }
 
   return (
-    <Fragment>
+    <>
       <ProcessingSearch
         arrRespProduct={arrProd}
         {...page}
       />
-    </Fragment>
+    </>
   );
 };
 

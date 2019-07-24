@@ -1,4 +1,4 @@
-import React, { FC, Fragment, memo } from "react";
+import React, { FC, memo } from "react";
 import useBanner from "../../Containers/useHooks/useBanner";
 
 const Banner: FC<{ array: JSX.Element[]; yardage: number }> = ({
@@ -7,11 +7,11 @@ const Banner: FC<{ array: JSX.Element[]; yardage: number }> = ({
 }) => {
   const { bannForth, bannBeck, bannArr } = useBanner(array, yardage);
   return (
-    <Fragment>
+    <>
       <button onClick={bannForth}>{">"}</button>
       <button onClick={bannBeck}>{"<"}</button>
-      <Fragment>{bannArr}</Fragment>
-    </Fragment>
+     <ul>{bannArr}</ul> 
+    </>
   );
 };
 

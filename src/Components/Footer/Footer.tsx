@@ -1,10 +1,11 @@
-import React,{Fragment} from 'react';
-import { NavLink } from 'react-router-dom';
+import React from "react";
+import { NavLink } from "react-router-dom";
 
 const Footer = () => (
-    <Fragment>
-      <NavLink to={"/Admin"}>{"Admin Information"}</NavLink>
-    </Fragment>
+  <>
+    <NavLink to={"/"}>{"Admin"}</NavLink>
+    <NavLink to={"/"}>{"About Us"}</NavLink>
+  </>
 );
 
 export default Footer;

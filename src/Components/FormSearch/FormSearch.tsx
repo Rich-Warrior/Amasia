@@ -1,46 +1,46 @@
-import React, { FC, useState, useMemo, Fragment } from "react";
+import React, { FC, useState } from "react";
 import { NavLink, RouteComponentProps, withRouter } from "react-router-dom";
 
 import { FormSearchOption } from "./FormSearchArray";
 import { FormSearchInput } from "./FormSearchObject";
-import objCheckURL from "../../Containers/Class/CheckURL"
+import objCheckURL from "../../Containers/Class/CheckURL";
 
 const FormSearch: FC<RouteComponentProps<{ schProd: string }>> = ({
   match: {
     params: { schProd }
   }
 }) => {
-  const [category, setCategory] = useState<string>("All");
-  const [search, setSearch] = useState<string>("");
-  useMemo(() => {
+  const [form, setForm] = useState(() => {
     const { Category, Search } = objCheckURL.FormSearchCheckURL(schProd);
-    setSearch(Search);
-    setCategory(Category);
-  }, [schProd]);
-
+    return { Category, Search };
+  });
   return (
-    <Fragment>
+    <form>
       <input
         {...FormSearchInput}
-        value={search}
+        value={form.Search}
         placeholder={"Enter search text"}
         onChange={({ target }) => {
-          setSearch(target.value);
+          setForm(f => ({ ...f, Search: target.value }));
         }}
       />
       <NavLink
-        to={`/sch/Categories=${category}&Search=${search}&ListPage=${15}&Page=${1}`}
+        to={`/sch/Categories=${form.Category}&Search=${
+          form.Search
+        }&ListPage=${15}&Page=${1}`}
+        onClick={e => !form.Search && e.preventDefault()}
       >
+        <input type={"submit"} value={"search"} />
       </NavLink>
       <select
-        value={category}
+        value={form.Category}
         onChange={({ target: { value } }) => {
-          setCategory(value);
+          setForm(f => ({ ...f, Category: value }));
         }}
       >
-        <Fragment>{FormSearchOption}</Fragment>
+        {FormSearchOption}
       </select>
-    </Fragment>
+    </form>
   );
 };
 

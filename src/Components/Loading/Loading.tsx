@@ -1,7 +1,7 @@
-import React, { FC } from "react";
-import "./Loding.css";
+import React from "react";
+import "./Loading.css";
 
-const Loding: FC = () => (
+const Loading = () => (
   <div className="cssload-loader">
     <div className="cssload-inner cssload-one" />
     <div className="cssload-inner cssload-two" />
@@ -9,4 +9,4 @@ const Loding: FC = () => (
   </div>
 );
 
-export default Loding;
+export default Loading;

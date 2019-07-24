@@ -1,4 +1,4 @@
-import React, { FC, Fragment } from "react";
+import React, { FC } from "react";
 import useFlippingList from "../../Containers/useHooks/useFlippingList";
 
 const FlipThroList: FC<{
@@ -6,25 +6,24 @@ const FlipThroList: FC<{
   arrList: JSX.Element[];
   indxList: number;
 }> = ({ yardage, arrList, indxList }) => {
-  const {
-    flippingList,
-    FlippingListForth,
-    FlippingListBeck } = useFlippingList({ yardage, arrList, indxList })
+  const { flippingList, FlippingListForth, FlippingListBeck } = useFlippingList(
+    { yardage, arrList, indxList }
+  );
 
   return (
-    <Fragment>
+    <>
       {arrList.length > 1 && (
-        <Fragment>
+        <>
           {arrList.length > yardage && (
-            <Fragment>
+            <>
               <button onClick={FlippingListForth}>{">"}</button>
               <button onClick={FlippingListBeck}>{"<"}</button>
-            </Fragment>
+            </>
           )}
-          <Fragment> {flippingList} </Fragment>
-        </Fragment>
+          <ul>{flippingList}</ul>
+        </>
       )}
-    </Fragment>
+    </>
   );
 };
 

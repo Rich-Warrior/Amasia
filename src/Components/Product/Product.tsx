@@ -1,9 +1,9 @@
-import React, { FC, Fragment, useState, useEffect } from "react";
+import React, { FC, useState, useEffect } from "react";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 
 import HandlerErr from "../HandlerErr";
-import Loding from "../Loding";
-import objCheckURL from "../../Containers/Class/CheckURL"
+import Loading from "../Loading";
+import objCheckURL from "../../Containers/Class/CheckURL";
 import FlipThroList from "../FlipThroList";
 import objProcesRequest from "../../Containers/Class/ProcessingRequest";
 import { faceProduct } from "../../Type/Interface";
@@ -17,32 +17,42 @@ const Product: FC<RouteComponentProps<{ product: string }>> = ({ match }) => {
   const [saizCateg, setSaizCateg] = useState<string>("");
 
   useEffect(() => {
-    const [params, url] = [match.params.product, match.url]
+    const [params, url] = [match.params.product, match.url];
     const checkResponseURL = objCheckURL.ProductCheckURL(params, url);
     if (checkResponseURL) {
       (async () => {
         setResError("");
         setProd(undefined);
-        const Prod: faceProduct | string = await objProcesRequest.ServerRequest(`${objProcesRequest.headURL}${checkResponseURL}`);
+        const Prod: faceProduct | string = await objProcesRequest.ServerRequest(
+          `${objProcesRequest.headURL}${checkResponseURL}`
+        );
         if (typeof Prod === "object") {
           document.title = `${Prod.title}`;
           setProd(Prod);
           setListImg(
-            Prod.src
-              .map((value, index) => (
-                <img key={`${value}${0.1 + index}`}
-                  src={`/${value}`} alt={Prod.title}
-                  height={"64px"} width={"64px"}
+            Prod.src.map((value, index) => (
+              <li key={`${value}${0.1 + index}`}>
+                <img
+                  src={`/${value}`}
+                  alt={Prod.title}
+                  height={"64px"}
+                  width={"64px"}
                   onClick={() => {
                     setListIndx(index);
                     Prod.color.length >= index &&
                       setColorCateg(Prod.color[index]);
-                  }} />)));
+                  }}
+                />
+              </li>
+            ))
+          );
         } else if (Prod !== "AbortError") {
           setResError(Prod);
         }
       })();
-    } else { setResError("404"); }
+    } else {
+      setResError("404");
+    }
     return () => {
       objProcesRequest.Abort();
     };
@@ -50,16 +60,18 @@ const Product: FC<RouteComponentProps<{ product: string }>> = ({ match }) => {
   if (resError !== "") {
     return <HandlerErr error={resError} />;
   } else if (!prod) {
-    return <Loding />;
+    return <Loading />;
   }
 
   return (
-    <Fragment>
+    <>
       <div itemScope itemType={"http://schema.org/Product"}>
         <h1 itemProp={"name"}>{prod.title}</h1>
         {listImg.length > 7 ? (
           <FlipThroList yardage={6} arrList={listImg} indxList={listIndx} />
-        ) :  listImg.length > 1 && <Fragment>{listImg}</Fragment>}
+        ) : (
+          listImg.length > 1 && <>{listImg}</>
+        )}
         <img
           src={`/${prod.src[listIndx]}`}
           alt={prod.title}
@@ -68,7 +80,7 @@ const Product: FC<RouteComponentProps<{ product: string }>> = ({ match }) => {
           itemProp={"image"}
         />
       </div>
-      <Fragment>
+      <>
         {prod.color.length > 1 ? (
           <select
             value={colorCateg}
@@ -82,10 +94,10 @@ const Product: FC<RouteComponentProps<{ product: string }>> = ({ match }) => {
             ))}
           </select>
         ) : (
-            <span>{prod.color}</span>
-          )}
-      </Fragment>
-      <Fragment>
+          <span>{prod.color}</span>
+        )}
+      </>
+      <>
         {prod.saiz.length > 1 ? (
           <select
             value={saizCateg}
@@ -98,9 +110,9 @@ const Product: FC<RouteComponentProps<{ product: string }>> = ({ match }) => {
             ))}
           </select>
         ) : (
-            <span>{prod.saiz}</span>
-          )}
-      </Fragment>
+          <span>{prod.saiz}</span>
+        )}
+      </>
       <input size={4} type={"text"} />
       <div itemProp={"offers"} itemScope itemType={"http://schema.org/Offer"}>
         <span itemProp={"price"} {...{ content: `${prod.price}` }}>
@@ -111,7 +123,7 @@ const Product: FC<RouteComponentProps<{ product: string }>> = ({ match }) => {
       <span>{prod.prodState}</span>
       <span>{prod.shipping}</span>
       <span>{prod.sold}</span>
-    </Fragment>
+    </>
   );
 };
 

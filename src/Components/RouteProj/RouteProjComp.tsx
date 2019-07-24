@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React from "react";
 import CategorySearch from ".././CategorySearch";
 import Product from "../Product";
 import SearchProd from "../SearchProd";
@@ -7,26 +7,32 @@ import Header from "../Header";
 import Footer from "../Footer";
 
 export const RouteProduct = () => (
-  <Fragment>
-    <Header/>
+  <>
+    <Header />
     <main>
-      <Product/>
+      <Product />
     </main>
-  </Fragment>
+    <footer>
+      <Footer />
+    </footer>
+  </>
 );
 
 export const RouteCategProduct = () => (
-  <Fragment>
-    <Header/>
+  <>
+    <Header />
     <main>
       <CategorySearch />
     </main>
-  </Fragment>
+    <footer>
+      <Footer />
+    </footer>
+  </>
 );
 
 export const RouteHead = () => (
-  <Fragment>
-    <Header/>
+  <>
+    <Header />
     <main>
       <h1>{"Welcome to Amasia"}</h1>
       <NewProd />
@@ -34,13 +40,16 @@ export const RouteHead = () => (
     <footer>
       <Footer />
     </footer>
-  </Fragment>
+  </>
 );
 export const RouteSchProd = () => (
-  <Fragment>
+  <>
     <Header />
     <main>
       <SearchProd />
     </main>
-  </Fragment>
+    <footer>
+      <Footer />
+    </footer>
+  </>
 );

@@ -1,4 +1,4 @@
-import React, { FC, Fragment, useState, useCallback } from "react";
+import React, { FC, useState, useCallback } from "react";
 
 import ConveyorProduct from "../ConveyorProduct";
 import {
@@ -59,7 +59,7 @@ const ProcessingSearch: FC<{
   };
 
   return (
-    <Fragment>
+    <>
       <form onSubmit={handleSubmit}>
         {validInput.validPrice && (
           <div>{"Please provide a valid price range"}</div>
@@ -84,7 +84,7 @@ const ProcessingSearch: FC<{
         arrConvProd={validInput.formFilled ? processingProd : arrRespProduct}
         {...infoProd}
       />
-    </Fragment>
+    </>
   );
 };
 

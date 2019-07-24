@@ -1,20 +1,16 @@
-import React, { Fragment } from 'react';
+import React from "react";
 
-import { NavLink } from 'react-router-dom';
-import LogIn from '../LogIn';
+import { NavLink } from "react-router-dom";
+import LogIn from "../LogIn";
 
 const ButtLogSing = () => {
   return (
-    <Fragment>
+    <>
       <LogIn />
-      <NavLink to={"/SingUp"}>
-        {"Sign Up"}
-      </NavLink>
-      <NavLink to={"/"}>
-        {"Log In"}
-      </NavLink>
-    </Fragment>
+      <NavLink to={"/SingUp"}>{"Sign Up"}</NavLink>
+      <NavLink to={"/"}>{"Log In"}</NavLink>
+    </>
   );
-}
+};
 
 export default ButtLogSing;

@@ -1,4 +1,4 @@
-import React, { FC, Fragment } from "react";
+import React, { FC } from "react";
 
 import { faceProduct } from "../../Type/Interface";
 
@@ -11,7 +11,7 @@ const ProdListItem: FC<faceProduct> = ({
   src = [],
   price = ""
 }) => (
-  <Fragment>
+  <>
     {!!title && <h2 itemProp="name">{title}</h2>}
     {!!src.length && (
       <img
@@ -26,7 +26,7 @@ const ProdListItem: FC<faceProduct> = ({
     {!!prodState && <span>{prodState}</span>}
     {!!shipping && <span>{shipping}</span>}
     {!!sold && <span>{sold}</span>}
-  </Fragment>
+  </>
 );
 
 export default ProdListItem;

@@ -1,13 +1,11 @@
-import React, { Fragment, memo } from "react";
+import React, { memo } from "react";
 import MensWomensChildrensLink from "./NavArray";
 
 const Nav = () => {
   return (
-    <Fragment>
-      <nav>
-        <Fragment>{MensWomensChildrensLink}</Fragment>
-      </nav>
-    </Fragment>
+    <>
+      <nav>{MensWomensChildrensLink}</nav>
+    </>
   );
 };
 

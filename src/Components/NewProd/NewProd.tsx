@@ -1,8 +1,8 @@
-import React, { FC, Fragment, useEffect, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 
 import HandlerErr from "../HandlerErr";
-import Loding from "../Loding";
+import Loading from "../Loading";
 import Banner from "../Banner";
 import { newProdImg, newProdCateg } from "./NewProdArray";
 import useBanner from "../../Containers/useHooks/useBanner";
@@ -26,15 +26,18 @@ const NewProd: FC<RouteComponentProps<{}>> = ({ match }) => {
     (async () => {
       setArrProd([]);
       setResError("");
-      const Prod:faceProduct[] | string = await objProcesRequest.ServerRequest(`${objProcesRequest.newURL}/New/${bannArr[0]}.json`);
+      const Prod: faceProduct[] | string = await objProcesRequest.ServerRequest(
+        `${objProcesRequest.newURL}/New/${bannArr[0]}.json`
+      );
       if (Array.isArray(Prod)) {
         document.title = `Hat Jacket Pants Shoes Suit | Amasia`;
         setArrProd(
           Prod.map((ProdArr: faceProduct, ProdIndex) => (
-            <Fragment key={`${ProdIndex / 10 + ProdIndex}`}>
+            <li key={`${ProdIndex / 10 + ProdIndex}`}>
               <ProductList arrListProd={ProdArr} />
-            </Fragment>
-          )))
+            </li>
+          ))
+        );
       } else if (Prod !== "AbortError") {
         setResError(Prod);
       }
@@ -47,16 +50,16 @@ const NewProd: FC<RouteComponentProps<{}>> = ({ match }) => {
   if (resError !== "") {
     return <HandlerErr error={resError} />;
   } else if (!arrProd.length) {
-    return <Loding />;
+    return <Loading />;
   }
 
   return (
-    <Fragment>
+    <>
       <button onClick={bannForth}>{">"}</button>
       <button onClick={bannBeck}>{"<"}</button>
-      <Fragment>{newProdImg[bannListIndex - 1]}</Fragment>
+      {newProdImg[bannListIndex - 1]}
       <Banner array={arrProd} yardage={8} />
-    </Fragment>
+    </>
   );
 };
 
