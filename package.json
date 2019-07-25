@@ -1,0 +1,43 @@
+{
+  "name": "1",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@types/jest": "24.0.13",
+    "@types/node": "12.0.7",
+    "@types/react": "^16.8.19",
+    "@types/react-dom": "^16.8.4",
+    "@types/react-router-dom": "^4.3.3",
+    "i": "^0.3.6",
+    "install": "^0.12.2",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "react-router": "^5.0.1",
+    "react-router-dom": "^5.0.1",
+    "react-scripts": "3.0.1",
+    "shortid": "^2.2.14",
+    "tsify": "^4.0.1",
+    "tslint-react-hooks": "^2.1.0",
+    "typescript": "3.5.1",
+    "uuid": "^3.3.2"
+  },
+  "scripts": {
+    "tslint-check": "tslint-config-prettier-check ./tslint.json",
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ],
+  "devDependencies": {
+    "tslint-config-prettier": "^1.18.0"
+  }
+}
