@@ -35,10 +35,10 @@ const NewProd: FC<RouteComponentProps<{}>> = ({ match }) => {
             signal: signal
           }
         );
-        if (!Res.ok) {
+        const ResObj = await Res.json();
+        if (!Res.ok || !ResObj) {
           throw new Error("Page Not Found 404");
         }
-        const ResObj = await Res.json();
         const ResArr = await Object.values(ResObj).flat();
         await setArrProd(
           ResArr.map((ProdArr: faceProduct, ProdIndex) => (

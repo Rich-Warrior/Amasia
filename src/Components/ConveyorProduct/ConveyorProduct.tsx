@@ -14,13 +14,13 @@ const ConveyorProduct: FC<{
   ListPage: number;
   Page: number;
   Params: string;
-  NameSearch: string;
+  SearchValue: string;
 }> = ({
   arrConvProd = [],
   ListPage = 15,
   Page = 1,
   Params = "",
-  NameSearch = ""
+  SearchValue = ""
 }) => {
   const [arrCon, setArrCon] = useState<faceProduct[][]>([]);
   const [conIndex, setConIndex] = useState<number>(0);
@@ -69,7 +69,7 @@ const ConveyorProduct: FC<{
 
   return (
     <Fragment>
-      <h1>{`results ${arrConvProd.length} for ${NameSearch}`}</h1>
+      <h1>{`results ${arrConvProd.length} for ${SearchValue}`}</h1>
       {!!arrCon.length && (
         <Fragment>
           <ProductList arrListProd={arrCon[conIndex]} />

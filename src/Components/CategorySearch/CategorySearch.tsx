@@ -3,44 +3,31 @@ import { RouteComponentProps, withRouter } from "react-router-dom";
 import ConveyorProduct from "../ConveyorProduct";
 import HandlerErr from "../HandlerErr";
 import Loding from "../Loding";
+import objCheckURL from "../../Containers/Class/CheckURL"
 import { faceProduct } from "../../Type/Interface";
 
-const ButSearch: FC<RouteComponentProps<{ PageList: string }>> = ({
+const CategorySearch: FC<RouteComponentProps<{ PageList: string }>> = ({
   match
 }) => {
   const [arrProd, setArrProd] = useState<faceProduct[]>([]);
   const [resError, setResError] = useState<string>("");
-  const [page, setPage] = useState({ Page: 0, ListPage: 15, NameSearch: "" });
+  const [page, setPage] = useState({ Page: 0, ListPage: 15, SearchValue: "", Params: "" });
 
   useEffect(() => {
     const abortController = new AbortController();
     const signal = abortController.signal;
+    const [PageList, path, url] = [match.params.PageList, match.path, match.url];
     (async () => {
       setResError("");
       setArrProd([]);
-      const searchParams = new URLSearchParams(match.params.PageList);
-      const BoolPage =
-        !Number.isNaN(+`${searchParams.get("Page")}`) &&
-        !!searchParams.get("Page");
-      const BoolListPage =
-        !Number.isNaN(+`${searchParams.get("ListPage")}`) &&
-        !!searchParams.get("ListPage");
-      const NameSrchArr = match.path.split("/");
-      if (!BoolPage || !BoolListPage) {
-        setResError("Page Not Found 404");
-      } else {
-        setPage({
-          Page: +`${searchParams.get("Page")}`,
-          ListPage: +`${searchParams.get("ListPage")}`,
-          NameSearch: `Categories ${NameSrchArr[1]}  ${NameSrchArr[2]}`
-        });
-      }
       try {
+      const checkResponseURL = await objCheckURL.CategoryCheckURL(PageList, path, url);
+      if (typeof (checkResponseURL) === "boolean") { throw new Error("Page Not Found 404"); }
+      const { Page, ListPage, SearchValue, Categories } = await checkResponseURL;
+      console.log(Categories);
+      setPage({ Page, ListPage, SearchValue, Params: Categories });
         const Res = await fetch(
-          `https://foo0022.firebaseio.com${`${match.url.replace(
-            `${match.params.PageList}`,
-            ""
-          )}.json`}`,
+          `https://foo0022.firebaseio.com${Categories}`,
           { signal: signal }
         );
         const ResObj = await Res.json();
@@ -71,14 +58,11 @@ const ButSearch: FC<RouteComponentProps<{ PageList: string }>> = ({
   return (
     <Fragment>
       <ConveyorProduct
-        NameSearch={page.NameSearch}
         arrConvProd={arrProd}
-        ListPage={page.ListPage}
-        Page={page.Page}
-        Params={`${match.url.replace(`${match.params.PageList}`, "")}`}
+        {...page}
       />
     </Fragment>
   );
 };
 
-export default withRouter(ButSearch);
+export default withRouter(CategorySearch);

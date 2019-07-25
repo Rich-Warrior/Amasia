@@ -5,14 +5,21 @@ import SingUp from "../SingUp";
 import {
   RouteHead,
   RouteSchProd,
+  RouteProduct,
+  RouteCategProduct,
 } from "./RouteProjComp";
-import ArrRoute from "./PathComponCollector";
+import {
+  ArrPathProduct,
+  ArrPathPageList
+} from "./RouteProjArray";
+
 
 const RouteProj = () => (
   <Fragment>
     <Switch>
       <Route path="/" exact component={RouteHead}/>
-      <Fragment>{ArrRoute}</Fragment>
+      <Route path={ArrPathProduct} component={RouteProduct}/>; 
+      <Route path={ArrPathPageList} component={RouteCategProduct}/>; 
       <Route path="/sch/:schProd" component={RouteSchProd}/>
       <Route path="/Admin" component={Admin} />
       <Route path="/SingUp" component={SingUp} />

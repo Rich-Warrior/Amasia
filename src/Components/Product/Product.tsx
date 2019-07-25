@@ -33,7 +33,7 @@ const Product: FC<RouteComponentProps<{ product: string }>> = ({ match }) => {
           )}${Length}.json`,
           { signal: signal }
         );
-        const Product = await Res.json();
+        const Product:faceProduct | null = await Res.json();
         if (!Res.ok || !Product) {
           throw new Error("Page Not Found 404");
         }

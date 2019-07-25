@@ -1,5 +1,5 @@
 import React, { Fragment } from "react";
-import ButSearch from ".././ButSearch";
+import CategorySearch from ".././CategorySearch";
 import Product from "../Product";
 import SearchProd from "../SearchProd";
 import NewProd from "../NewProd";
@@ -19,7 +19,7 @@ export const RouteCategProduct = () => (
   <Fragment>
     <Header />
     <main>
-      <ButSearch />
+      <CategorySearch />
     </main>
   </Fragment>
 );
