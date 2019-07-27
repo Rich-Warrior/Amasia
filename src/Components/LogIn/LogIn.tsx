@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React, { Fragment, memo } from "react";
 
 const LogIn = () => (
   <Fragment>
@@ -7,4 +7,4 @@ const LogIn = () => (
   </Fragment>
 );
 
-export default LogIn;
+export default memo(LogIn);

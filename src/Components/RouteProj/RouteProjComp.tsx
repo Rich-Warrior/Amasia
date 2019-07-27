@@ -8,7 +8,7 @@ import Footer from "../Footer";
 
 export const RouteProduct = () => (
   <Fragment>
-    <Header />
+    <Header/>
     <main>
       <Product/>
     </main>
@@ -17,7 +17,7 @@ export const RouteProduct = () => (
 
 export const RouteCategProduct = () => (
   <Fragment>
-    <Header />
+    <Header/>
     <main>
       <CategorySearch />
     </main>
@@ -26,7 +26,7 @@ export const RouteCategProduct = () => (
 
 export const RouteHead = () => (
   <Fragment>
-    <Header />
+    <Header/>
     <main>
       <h1>{"Welcome to Amasia"}</h1>
       <NewProd />

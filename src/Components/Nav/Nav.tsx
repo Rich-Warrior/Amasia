@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React, { Fragment, memo } from "react";
 import MensWomensChildrensLink from "./NavArray";
 
 const Nav = () => {
@@ -11,4 +11,4 @@ const Nav = () => {
   );
 };
 
-export default Nav;
+export default memo(Nav);

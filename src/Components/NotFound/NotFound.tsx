@@ -1,6 +1,6 @@
-import React, { FC } from "react";
+import React from "react";
 
-const NotFound: FC<{ prodName: string }> = ({ prodName }) => (
+const NotFound = ({ prodName }:{ prodName: string }) => (
   <div>{`roduct name ${prodName} not found`}</div>
 );
 

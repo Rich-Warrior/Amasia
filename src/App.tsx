@@ -1,7 +1,7 @@
-import React, { FC, Fragment } from "react";
+import React, { Fragment } from "react";
 import RouteProj from "./Components/RouteProj";
 
-const App: FC = () => (
+const App = () => (
   <Fragment>
     <RouteProj/>
   </Fragment>

@@ -1,7 +1,6 @@
-import React, { FC, useState, useMemo } from "react";
+import React, { FC, useState, useMemo, Fragment } from "react";
 import { NavLink, RouteComponentProps, withRouter } from "react-router-dom";
 
-import { DupTegText } from "../../Containers/DupComp/DupTeg/DupTeg";
 import { FormSearchOption } from "./FormSearchArray";
 import { FormSearchInput } from "./FormSearchObject";
 
@@ -45,7 +44,7 @@ const FormSearch: FC<RouteComponentProps<{ schProd: string }>> = ({
           setCategory(value);
         }}
       >
-        <DupTegText array={FormSearchOption} />
+        <Fragment>{FormSearchOption}</Fragment>
       </select>
     </form>
   );

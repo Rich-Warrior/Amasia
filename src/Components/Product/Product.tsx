@@ -3,13 +3,13 @@ import { RouteComponentProps, withRouter } from "react-router-dom";
 
 import HandlerErr from "../HandlerErr";
 import Loding from "../Loding";
-import { faceProduct, faceTegWithoutText } from "../../Type/Interface";
+import { faceProduct } from "../../Type/Interface";
 import FlipThroList from "../FlipThroList";
 
 const Product: FC<RouteComponentProps<{ product: string }>> = ({ match }) => {
   const [prod, setProd] = useState<faceProduct>();
   const [resError, setResError] = useState<string>("");
-  const [listImg, setListImg] = useState<faceTegWithoutText[]>([]);
+  const [listImg, setListImg] = useState<JSX.Element[]>([]);
   const [listIndx, setListIndx] = useState<number>(0);
   const [colorCateg, setColorCateg] = useState<string>("");
   const [saizCateg, setSaizCateg] = useState<string>("");
@@ -33,7 +33,7 @@ const Product: FC<RouteComponentProps<{ product: string }>> = ({ match }) => {
           )}${Length}.json`,
           { signal: signal }
         );
-        const Product:faceProduct | null = await Res.json();
+        const Product: faceProduct | null = await Res.json();
         if (!Res.ok || !Product) {
           throw new Error("Page Not Found 404");
         }
@@ -41,21 +41,15 @@ const Product: FC<RouteComponentProps<{ product: string }>> = ({ match }) => {
         await setProd(Product);
         setListImg(
           Product.src
-            .map((value, index) => ({
-              Tag: "img",
-              key: `${value}${0.1 + index}`,
-              src: `/${value}`,
-              alt: Product.title,
-              height: "64px",
-              width: "64px",
-              onClick: () => {
-                setListIndx(index);
-                Product.color.length >= index &&
-                  setColorCateg(Product.color[index]);
-              }
-            }))
-            .flat()
-        );
+            .map((value, index) => (
+              <img key={`${value}${0.1 + index}`}
+                src={`/${value}`} alt={Product.title}
+                height={"64px"} width={"64px"}
+                onClick={() => {
+                  setListIndx(index);
+                  Product.color.length >= index &&
+                    setColorCateg(Product.color[index]);
+                }} />)));
       } catch (error) {
         if (error.name !== "AbortError") {
           setResError(error.message);
@@ -76,10 +70,9 @@ const Product: FC<RouteComponentProps<{ product: string }>> = ({ match }) => {
     <Fragment>
       <div itemScope itemType={"http://schema.org/Product"}>
         <h1 itemProp={"name"}>{prod.title}</h1>
-
-        {!!listImg.length && (
+        {listImg.length>7?(
           <FlipThroList arrLeng={6} arrTeg={listImg} IndxImg={listIndx} />
-        )}
+        ):<Fragment>{listImg}</Fragment>}
         <img
           src={`/${prod.src[listIndx]}`}
           alt={prod.title}
@@ -102,8 +95,8 @@ const Product: FC<RouteComponentProps<{ product: string }>> = ({ match }) => {
             ))}
           </select>
         ) : (
-          <span>{prod.color}</span>
-        )}
+            <span>{prod.color}</span>
+          )}
       </Fragment>
       <Fragment>
         {prod.saiz.length > 1 ? (
@@ -118,8 +111,8 @@ const Product: FC<RouteComponentProps<{ product: string }>> = ({ match }) => {
             ))}
           </select>
         ) : (
-          <span>{prod.saiz}</span>
-        )}
+            <span>{prod.saiz}</span>
+          )}
       </Fragment>
       <input size={4} type={"text"} />
       <div itemProp={"offers"} itemScope itemType={"http://schema.org/Offer"}>

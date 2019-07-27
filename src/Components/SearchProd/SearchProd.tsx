@@ -14,44 +14,45 @@ const SearchProd: FC<RouteComponentProps<{ schProd: string }>> = ({ match }) => 
   const [resError, setResError] = useState<string>("");
   const [searchNam, setSearchNam] = useState<string>("");
   const [page, setPage] = useState({ Page: 0, ListPage: 15, Params: "", SearchValue: "" });
-
+  
   useEffect(() => {
     const abortController = new AbortController();
     const signal = abortController.signal;
-    (async () => {
-      setResError("");
-      setSearchNam("");
-      setReqSearch([]);
-      setNothFound(false);
-      try {
-        const checkResponseURL = objCheckURL.SearchCheckURL(match.params.schProd);
-        if (typeof (checkResponseURL) === "boolean") {throw new Error("Page Not Found 404");}
+    const checkResponseURL = objCheckURL.SearchCheckURL(match.params.schProd);
+    if (typeof (checkResponseURL) !== "boolean") {
+      (async () => {
         const { Page, ListPage, Params, SearchValue, Categories } = checkResponseURL;
-        setPage({ Page, ListPage, Params, SearchValue:`Searchn ${SearchValue}` });
-        const Res = await fetch(`https://foo0022.firebaseio.com/${Categories}`, { signal: signal });
-        const ResObj: faceResponse | faceCategoriesList | null = await Res.json();
-        if (!Res.ok || !ResObj) {
-          throw new Error("Page Not Found 404");
-        }
-        document.title = `${SearchValue} | Amasia`;
-        const ResArr = await (Categories === ".json") ? Object.values(ResObj)
-          .map(v => Object.values(v).flat())
-          .flat()
-          .filter(({ title }) => title.includes(SearchValue))
-          :
-          Object.values(ResObj)
+        setResError("");
+        setSearchNam("");
+        setReqSearch([]);
+        setNothFound(false);
+        try {
+          const Res = await fetch(`https://foo0022.firebaseio.com/${Categories}`, { signal: signal });
+          const ResObj: faceResponse | faceCategoriesList | null = await Res.json();
+          if (!Res.ok || !ResObj) {
+            throw new Error("Page Not Found 404");
+          }
+          document.title = `${SearchValue} | Amasia`;
+          setPage({ Page, ListPage, Params, SearchValue: `Searchn ${SearchValue}` });
+          const ResArr = await (Categories === ".json") ? Object.values(ResObj)
+            .map(v => Object.values(v).flat())
             .flat()
-            .filter(({ title }) => title.includes(SearchValue));
-        if (!!ResArr.length) {
-          setReqSearch(ResArr);
-        } else {
-          setNothFound(!ResArr.length);
-          setSearchNam(SearchValue);
+            .filter(({ title }) => title.includes(SearchValue))
+            :
+            Object.values(ResObj)
+              .flat()
+              .filter(({ title }) => title.includes(SearchValue));
+          if (!!ResArr.length) {
+            setReqSearch(ResArr);
+          } else {
+            setNothFound(!ResArr.length);
+            setSearchNam(SearchValue);
+          }
+        } catch (error) {
+          if (error.name !== "AbortError") { setResError(error.message); }
         }
-      } catch (error) {
-        if (error.name !== "AbortError") { setResError(error.message); }
-      }
-    })();
+      })();
+    }
     return () => { abortController.abort(); };
   }, [match]);
 

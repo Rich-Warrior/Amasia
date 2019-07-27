@@ -6,8 +6,8 @@ import Loding from "../Loding";
 import Banner from "../Banner";
 import { newProdImg, newProdCateg } from "./NewProdArray";
 import useBanner from "../../Containers/useHooks/useBanner";
-import { faceProduct } from "../../Type/Interface";
 import ProductList from "../ProductList";
+import { faceProduct } from "../../Type/Interface";
 
 const NewProd: FC<RouteComponentProps<{}>> = ({ match }) => {
   const [arrProd, setArrProd] = useState<JSX.Element[]>([]);
@@ -24,10 +24,10 @@ const NewProd: FC<RouteComponentProps<{}>> = ({ match }) => {
   useEffect(() => {
     const abortController = new AbortController();
     const signal = abortController.signal;
-    document.title = `Hat Jacket Pants Shoes Suit | Amasia`;
     (async () => {
       setArrProd([]);
       setResError("");
+      document.title = `Hat Jacket Pants Shoes Suit | Amasia`;
       try {
         const Res = await fetch(
           `https://doo0022.firebaseio.com/New/${bannArr}.json`,
@@ -35,12 +35,11 @@ const NewProd: FC<RouteComponentProps<{}>> = ({ match }) => {
             signal: signal
           }
         );
-        const ResObj = await Res.json();
-        if (!Res.ok || !ResObj) {
+        const ResArr:faceProduct[] | null = await Res.json();
+        if (!Res.ok || !ResArr) {
           throw new Error("Page Not Found 404");
         }
-        const ResArr = await Object.values(ResObj).flat();
-        await setArrProd(
+         setArrProd(
           ResArr.map((ProdArr: faceProduct, ProdIndex) => (
             <Fragment key={`${ProdIndex / 10 + ProdIndex}`}>
               <ProductList arrListProd={ProdArr} />

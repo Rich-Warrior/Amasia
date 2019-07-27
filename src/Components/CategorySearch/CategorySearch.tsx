@@ -1,5 +1,6 @@
 import React, { FC, Fragment, useEffect, useState } from "react";
 import { RouteComponentProps, withRouter } from "react-router-dom";
+
 import ConveyorProduct from "../ConveyorProduct";
 import HandlerErr from "../HandlerErr";
 import Loding from "../Loding";
@@ -17,37 +18,33 @@ const CategorySearch: FC<RouteComponentProps<{ PageList: string }>> = ({
     const abortController = new AbortController();
     const signal = abortController.signal;
     const [PageList, path, url] = [match.params.PageList, match.path, match.url];
-    (async () => {
-      setResError("");
-      setArrProd([]);
-      try {
-      const checkResponseURL = await objCheckURL.CategoryCheckURL(PageList, path, url);
-      if (typeof (checkResponseURL) === "boolean") { throw new Error("Page Not Found 404"); }
-      const { Page, ListPage, SearchValue, Categories } = await checkResponseURL;
-      console.log(Categories);
-      setPage({ Page, ListPage, SearchValue, Params: Categories });
-        const Res = await fetch(
-          `https://foo0022.firebaseio.com${Categories}`,
-          { signal: signal }
-        );
-        const ResObj = await Res.json();
-        if (!Res.ok || !ResObj) {
-          throw new Error("Page Not Found 404");
+    const checkResponseURL = objCheckURL.CategoryCheckURL(PageList, path, url);
+    if (checkResponseURL) {
+      (async () => {
+        const { Page, ListPage, SearchValue, Categories } = checkResponseURL;
+        setResError("");
+        setArrProd([]);
+        try {
+          const Res = await fetch(
+            `https://foo0022.firebaseio.com${Categories}`,
+            { signal: signal }
+          );
+          const ResArr: faceProduct[] | null = await Res.json();
+          if (!Res.ok || !ResArr) {
+            throw new Error("Page Not Found 404");
+          }
+          document.title = SearchValue;
+          setPage({ Page, ListPage, SearchValue: `Categories ${SearchValue}`, Params: Categories });
+          setArrProd(ResArr);
+        } catch (error) {
+          if (error.name !== "AbortError") {
+            setResError(error.message);
+          }
         }
-        const TitleNam = match.path.split("/");
-        document.title = `${TitleNam[1]}   ${TitleNam[2]}`;
-        const ResArr = await Object.values(ResObj).flat();
-        await setArrProd(ResArr);
-      } catch (error) {
-        if (error.name !== "AbortError") {
-          setResError(error.message);
-        }
-      }
-    })();
+      })();
+    } else { setResError("Page Not Found 404"); }
+    return () => abortController.abort();
 
-    return () => {
-      abortController.abort();
-    };
   }, [match]);
   if (resError !== "") {
     return <HandlerErr error={resError} />;

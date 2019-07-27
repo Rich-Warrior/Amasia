@@ -22,87 +22,87 @@ const ConveyorProduct: FC<{
   Params = "",
   SearchValue = ""
 }) => {
-  const [arrCon, setArrCon] = useState<faceProduct[][]>([]);
-  const [conIndex, setConIndex] = useState<number>(0);
-  const [listIndex, setListIndex] = useState<number>(0);
-  const [prodLengt, setProdLengt] = useState<number>(15);
+    const [arrListProd, setArrListProd] = useState<faceProduct[][]>([]);
+    const [indexListProd, setIndexListProd] = useState<number>(0);
+    const [listIndex, setListIndex] = useState<number>(0);
+    const [prodLengt, setProdLengt] = useState<number>(15);
 
-  const ListBooClick = index => {
-    if (index >= 0 && index < arrCon.length) {
-      window.scrollTo(0, 0);
-      setConIndex(index);
-      index > 5 ? setListIndex(index - 5) : setListIndex(0);
-    }
-  };
-  const ListOptiClick = useCallback(
-    (newLengt: number, newPage: number) => {
-      window.scrollTo(0, 0);
-      if (newPage === 1 && newLengt < 15) {
-        setProdLengt(15);
-        setListIndex(0);
-        setConIndex(0);
+    const ListBooClick = index => {
+      if (index >= 0 && index < arrListProd.length) {
+        window.scrollTo(0, 0);
+        setIndexListProd(index);
+        index > 5 ? setListIndex(index - 5) : setListIndex(0);
       }
-      const arrList: faceProduct[][] = [];
-      for (let i = 0; i < arrConvProd.length; i += newLengt) {
-        arrList.push(arrConvProd.slice(i, i + newLengt));
-      }
-      setArrCon(arrList);
-    },
-    [arrConvProd]
-  );
+    };
+    const ListOptiClick = useCallback(
+      (newLengt: number, newPage: number) => {
+        window.scrollTo(0, 0);
+        if (newPage === 1 && newLengt < 15) {
+          setProdLengt(15);
+          setListIndex(0);
+          setIndexListProd(0);
+        }
+        const arrList: faceProduct[][] = [];
+        for (let i = 0; i < arrConvProd.length; i += newLengt) {
+          arrList.push(arrConvProd.slice(i, i + newLengt));
+        }
+        setArrListProd(arrList);
+      },
+      [arrConvProd]
+    );
 
-  useEffect(() => {
-    const BoolPage =
-      Page > 0 && Page <= Math.ceil(arrConvProd.length / ListPage);
-    const BoolListPage = [15, 30, 70, 140].includes(ListPage);
-    if (BoolPage && BoolListPage) {
-      setProdLengt(ListPage);
-      setConIndex(Page - 1);
-      ListOptiClick(ListPage, Page);
-      if (Page > 6) {
-        setListIndex(Page - 6);
+    useEffect(() => {
+      const BoolPage =
+        Page > 0 && Page <= Math.ceil(arrConvProd.length / ListPage);
+      const BoolListPage = [15, 30, 70, 140].includes(ListPage);
+      if (BoolPage && BoolListPage) {
+        setProdLengt(ListPage);
+        setIndexListProd(Page - 1);
+        ListOptiClick(ListPage, Page);
+        if (Page > 6) {
+          setListIndex(Page - 6);
+        }
+      } else {
+        ListOptiClick(15, 1);
       }
-    } else {
-      ListOptiClick(15, 1);
-    }
-  }, [arrConvProd, ListOptiClick, ListPage, Page]);
+    }, [arrConvProd, ListOptiClick, ListPage, Page]);
 
-  return (
-    <Fragment>
-      <h1>{`results ${arrConvProd.length} for ${SearchValue}`}</h1>
-      {!!arrCon.length && (
-        <Fragment>
-          <ProductList arrListProd={arrCon[conIndex]} />
+    return (
+      <Fragment>
+        <h1>{`results ${arrConvProd.length} for ${SearchValue}`}</h1>
+        {!!arrListProd.length && (
           <Fragment>
-            {arrCon
-              .map((value, index) => (
-                <NavLink
-                  to={`${Params}ListPage=${prodLengt}&Page=${index + 1}`}
-                  onClick={() => {
-                    ListBooClick(index);
-                  }}
-                  key={`${arrCon[index][0].id}`}
-                >
-                  {index + 1}
-                </NavLink>
-              ))
-              .slice(listIndex, listIndex + 10)}
-            <select
-              value={prodLengt}
-              onChange={({ target: { value } }) => {
-                setProdLengt(+value);
-                ListOptiClick(+value, 1);
-              }}
-            >
-              {[15, 30, 70, 140].map((val, ind) => (
-                <option key={ind + 0.1 + val}>{val}</option>
-              ))}
-            </select>
+            <ProductList arrListProd={arrListProd[indexListProd]} />
+            <Fragment>
+              {arrListProd
+                .map((value, index) => (
+                  <NavLink
+                    to={`${Params}ListPage=${prodLengt}&Page=${index + 1}`}
+                    onClick={() => {
+                      ListBooClick(index);
+                    }}
+                    key={`${arrListProd[index][0].id}`}
+                  >
+                    {index + 1}
+                  </NavLink>
+                ))
+                .slice(listIndex, listIndex + 10)}
+              <select
+                value={prodLengt}
+                onChange={({ target: { value } }) => {
+                  setProdLengt(+value);
+                  ListOptiClick(+value, 1);
+                }}
+              >
+                {[15, 30, 70, 140].map((val, ind) => (
+                  <option key={ind + 0.1 + val}>{val}</option>
+                ))}
+              </select>
+            </Fragment>
           </Fragment>
-        </Fragment>
-      )}
-    </Fragment>
-  );
-};
+        )}
+      </Fragment>
+    );
+  };
 
 export default ConveyorProduct;

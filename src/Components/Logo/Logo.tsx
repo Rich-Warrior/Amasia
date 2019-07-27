@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, memo } from 'react';
 import { NavLink } from 'react-router-dom';
 
 const Logo = () => (
@@ -9,4 +9,4 @@ const Logo = () => (
     </Fragment>
 );
 
-export default Logo;
+export default memo(Logo);

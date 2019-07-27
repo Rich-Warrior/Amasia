@@ -1,4 +1,4 @@
-import React, { FC, Fragment } from "react";
+import React, { FC, Fragment, memo } from "react";
 import useBanner from "../../Containers/useHooks/useBanner";
 
 const Banner: FC<{ array: JSX.Element[]; yardage: number }> = ({
@@ -15,4 +15,4 @@ const Banner: FC<{ array: JSX.Element[]; yardage: number }> = ({
   );
 };
 
-export default Banner;
+export default memo(Banner);

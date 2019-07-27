@@ -28,7 +28,7 @@ class CheckURL {
         }
 
     }
-    CategoryCheckURL(Params: string, Path: string, matchURL:string): boolean | {
+    CategoryCheckURL(Params: string, Path: string, matchURL:string): false | {
         Page: number;
         ListPage: number;
         SearchValue: string;
@@ -42,13 +42,13 @@ class CheckURL {
             !Number.isNaN(+`${CategoryParams.get("ListPage")}`) &&
             !!CategoryParams.get("ListPage")
         const boolCheckUrl = !boolPage || !boolListPage;
-        if (boolCheckUrl) { return (boolCheckUrl); }
+        if (boolCheckUrl) { return (!boolCheckUrl); }
         else {
             const CategoryNameArr = Path.split("/");
             return ({
                 Page:+`${CategoryParams.get("Page")}`,
                 ListPage: +`${CategoryParams.get("ListPage")}`,
-                SearchValue: `Categories ${CategoryNameArr[1]}  ${CategoryNameArr[2]}`,
+                SearchValue: `${CategoryNameArr[1]}  ${CategoryNameArr[2]}`,
                 Categories: `${matchURL.replace(`${Params}`,"")}.json`
             });
         }

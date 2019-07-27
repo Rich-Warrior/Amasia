@@ -1,14 +1,5 @@
 import { OptionHTMLAttributes, InputHTMLAttributes } from "react";
 
-//react-router-dom
-
-export interface faceMatch<P> {
-  params: P;
-  isExact: boolean;
-  path: string;
-  url: string;
-}
-
 //Response
 export interface faceCategoriesList {
   Hat: faceProduct[],
@@ -48,11 +39,3 @@ export interface faceTeg {
   key: string;
 }
 
-export interface faceTegWithText
-  extends OptionHTMLAttributes<HTMLOptionElement>,
-  faceTeg {
-  text: string | number;
-}
-export interface faceTegWithoutText
-  extends InputHTMLAttributes<HTMLInputElement>,
-  faceTeg { }

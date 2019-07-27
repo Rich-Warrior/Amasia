@@ -1,35 +1,32 @@
 import React, { FC, Fragment, useState, useMemo } from "react";
 
-import { DupTeg } from "../../Containers/DupComp/DupTeg/DupTeg";
-
-import { faceTegWithoutText } from "../../Type/Interface";
-
 const FlipThroList: FC<{
   arrLeng: number;
-  arrTeg: faceTegWithoutText[];
+  arrTeg: JSX.Element[];
   IndxImg: number;
 }> = ({ arrLeng, arrTeg, IndxImg }) => {
   const [elemIndx, setElemIndx] = useState<number>(0);
-  const [newArrayTeg, setArrayTeg] = useState<faceTegWithoutText[]>([]);
+  const [newArrayTeg, setArrayTeg] = useState<JSX.Element[]>([]);
   useMemo(() => {
+    const arrStart = Math.floor(IndxImg / arrLeng) * arrLeng;
     if (IndxImg < arrTeg.length) {
       setArrayTeg(
         arrTeg.slice(
-          Math.floor(IndxImg / arrLeng) * arrLeng,
-          Math.floor(IndxImg / arrLeng) * arrLeng + arrLeng
+          arrStart,
+          arrStart + arrLeng
         )
       );
-      setElemIndx(Math.floor(IndxImg / arrLeng) * arrLeng + arrLeng);
+      setElemIndx(arrStart + arrLeng);
     } else {
       setArrayTeg(
         arrTeg.slice(
-          Math.floor(IndxImg / arrLeng) * arrLeng - arrLeng,
-          Math.floor(IndxImg / arrLeng) * arrLeng
+          arrStart - arrLeng,
+          arrStart
         )
       );
-      setElemIndx(Math.floor(IndxImg / arrLeng) * arrLeng - arrLeng);
+      setElemIndx(arrStart - arrLeng);
     }
-  }, [arrLeng,arrTeg,IndxImg]);
+  }, [arrLeng, arrTeg, IndxImg]);
 
   const arryForth = () => {
     if (elemIndx < arrTeg.length) {
@@ -54,7 +51,7 @@ const FlipThroList: FC<{
               <button onClick={arryBeck}>{"<"}</button>
             </Fragment>
           )}
-          <DupTeg array={newArrayTeg} />
+         <Fragment> {newArrayTeg} </Fragment>
         </Fragment>
       )}
     </Fragment>
