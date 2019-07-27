@@ -70,9 +70,9 @@ const Product: FC<RouteComponentProps<{ product: string }>> = ({ match }) => {
     <Fragment>
       <div itemScope itemType={"http://schema.org/Product"}>
         <h1 itemProp={"name"}>{prod.title}</h1>
-        {listImg.length>7?(
-          <FlipThroList arrLeng={6} arrTeg={listImg} IndxImg={listIndx} />
-        ):<Fragment>{listImg}</Fragment>}
+        {listImg.length > 7 ? (
+          <FlipThroList yardage={6} arrList={listImg} indxList={listIndx} />
+        ) : <Fragment>{listImg}</Fragment>}
         <img
           src={`/${prod.src[listIndx]}`}
           alt={prod.title}
