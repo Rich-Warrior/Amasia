@@ -14,12 +14,12 @@ const SearchProd: FC<RouteComponentProps<{ schProd: string }>> = ({ match }) => 
   const [resError, setResError] = useState<string>("");
   const [searchNam, setSearchNam] = useState<string>("");
   const [page, setPage] = useState({ Page: 0, ListPage: 15, Params: "", SearchValue: "" });
-  
+
   useEffect(() => {
     const abortController = new AbortController();
     const signal = abortController.signal;
     const checkResponseURL = objCheckURL.SearchCheckURL(match.params.schProd);
-    if (typeof (checkResponseURL) !== "boolean") {
+    if (checkResponseURL) {
       (async () => {
         const { Page, ListPage, Params, SearchValue, Categories } = checkResponseURL;
         setResError("");
@@ -52,7 +52,7 @@ const SearchProd: FC<RouteComponentProps<{ schProd: string }>> = ({ match }) => 
           if (error.name !== "AbortError") { setResError(error.message); }
         }
       })();
-    }
+    } else { setResError("Page Not Found 404"); }
     return () => { abortController.abort(); };
   }, [match]);
 

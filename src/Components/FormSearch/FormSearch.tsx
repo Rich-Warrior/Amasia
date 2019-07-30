@@ -3,6 +3,7 @@ import { NavLink, RouteComponentProps, withRouter } from "react-router-dom";
 
 import { FormSearchOption } from "./FormSearchArray";
 import { FormSearchInput } from "./FormSearchObject";
+import objCheckURL from "../../Containers/Class/CheckURL"
 
 const FormSearch: FC<RouteComponentProps<{ schProd: string }>> = ({
   match: {
@@ -12,14 +13,9 @@ const FormSearch: FC<RouteComponentProps<{ schProd: string }>> = ({
   const [category, setCategory] = useState<string>("All");
   const [search, setSearch] = useState<string>("");
   useMemo(() => {
-    const searchParams = new URLSearchParams(schProd);
-    if (!!searchParams.get("Categories") && !!searchParams.get("Search")) {
-      setCategory(`${searchParams.get("Categories")}`);
-      setSearch(`${searchParams.get("Search")}`);
-    } else {
-      setSearch("");
-      setCategory("All");
-    }
+    const { Category, Search } = objCheckURL.FormSearchCheckURL(schProd);
+    setSearch(Search);
+    setCategory(Category);
   }, [schProd]);
 
   return (

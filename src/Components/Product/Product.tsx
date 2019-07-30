@@ -3,8 +3,9 @@ import { RouteComponentProps, withRouter } from "react-router-dom";
 
 import HandlerErr from "../HandlerErr";
 import Loding from "../Loding";
-import { faceProduct } from "../../Type/Interface";
+import objCheckURL from "../../Containers/Class/CheckURL"
 import FlipThroList from "../FlipThroList";
+import { faceProduct } from "../../Type/Interface";
 
 const Product: FC<RouteComponentProps<{ product: string }>> = ({ match }) => {
   const [prod, setProd] = useState<faceProduct>();
@@ -17,45 +18,43 @@ const Product: FC<RouteComponentProps<{ product: string }>> = ({ match }) => {
   useEffect(() => {
     const abortController = new AbortController();
     const signal = abortController.signal;
-    (async () => {
-      setResError("");
-      setProd(undefined);
-      const searchParams = new URLSearchParams(match.params.product);
-      if (Number.isNaN(+`${searchParams.get("Length")}`)) {
-        setResError("Page Not Found 404");
-      }
-      const Length = `${searchParams.get("Length")}`;
-      try {
-        const Res = await fetch(
-          `https://foo0022.firebaseio.com//${match.url.replace(
-            `Product/${match.params.product}`,
-            ""
-          )}${Length}.json`,
-          { signal: signal }
-        );
-        const Product: faceProduct | null = await Res.json();
-        if (!Res.ok || !Product) {
-          throw new Error("Page Not Found 404");
+    const checkResponseURL = objCheckURL.ProductCheckURL(match.params.product);
+    if (checkResponseURL) {
+      (async () => {
+        setResError("");
+        setProd(undefined);
+        try {
+          const Res = await fetch(
+            `https://foo0022.firebaseio.com//${match.url.replace(
+              `Product/${match.params.product}`,
+              ""
+            )}${checkResponseURL}.json`,
+            { signal: signal }
+          );
+          const Product: faceProduct | null = await Res.json();
+          if (!Res.ok || !Product) {
+            throw new Error("Page Not Found 404");
+          }
+          document.title = `${Product.title}`;
+          await setProd(Product);
+          setListImg(
+            Product.src
+              .map((value, index) => (
+                <img key={`${value}${0.1 + index}`}
+                  src={`/${value}`} alt={Product.title}
+                  height={"64px"} width={"64px"}
+                  onClick={() => {
+                    setListIndx(index);
+                    Product.color.length >= index &&
+                      setColorCateg(Product.color[index]);
+                  }} />)));
+        } catch (error) {
+          if (error.name !== "AbortError") {
+            setResError(error.message);
+          }
         }
-        document.title = `${Product.title}`;
-        await setProd(Product);
-        setListImg(
-          Product.src
-            .map((value, index) => (
-              <img key={`${value}${0.1 + index}`}
-                src={`/${value}`} alt={Product.title}
-                height={"64px"} width={"64px"}
-                onClick={() => {
-                  setListIndx(index);
-                  Product.color.length >= index &&
-                    setColorCateg(Product.color[index]);
-                }} />)));
-      } catch (error) {
-        if (error.name !== "AbortError") {
-          setResError(error.message);
-        }
-      }
-    })();
+      })();
+    } else { setResError("Page Not Found 404"); }
     return () => {
       abortController.abort();
     };

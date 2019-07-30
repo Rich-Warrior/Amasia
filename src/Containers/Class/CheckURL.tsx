@@ -1,5 +1,5 @@
 class CheckURL {
-    SearchCheckURL(Params: string): boolean | {
+    SearchCheckURL(Params: string): false | {
         Page: number;
         ListPage: number;
         Params: string;
@@ -14,7 +14,7 @@ class CheckURL {
         ) && !!searchParams.get("ListPage"));
         const boolCheckUrl: boolean = (!searchParams.get("Categories") || !searchParams.get("Search") || !boolPage || !boolListPage);
 
-        if (boolCheckUrl) { return (boolCheckUrl); }
+        if (boolCheckUrl) { return false; }
         else {
             const Categories = (searchParams.get("Categories") !== "All" && searchParams.get("Categories")) ?
                 `${searchParams.get("Categories")}.json` : ".json";
@@ -28,7 +28,7 @@ class CheckURL {
         }
 
     }
-    CategoryCheckURL(Params: string, Path: string, matchURL:string): false | {
+    CategoryCheckURL(Params: string, Path: string, matchURL: string): false | {
         Page: number;
         ListPage: number;
         SearchValue: string;
@@ -42,16 +42,37 @@ class CheckURL {
             !Number.isNaN(+`${CategoryParams.get("ListPage")}`) &&
             !!CategoryParams.get("ListPage")
         const boolCheckUrl = !boolPage || !boolListPage;
-        if (boolCheckUrl) { return (!boolCheckUrl); }
+        if (boolCheckUrl) { return false; }
         else {
             const CategoryNameArr = Path.split("/");
             return ({
-                Page:+`${CategoryParams.get("Page")}`,
+                Page: +`${CategoryParams.get("Page")}`,
                 ListPage: +`${CategoryParams.get("ListPage")}`,
                 SearchValue: `${CategoryNameArr[1]}  ${CategoryNameArr[2]}`,
-                Categories: `${matchURL.replace(`${Params}`,"")}.json`
+                Categories: `${matchURL.replace(`${Params}`, "")}.json`
             });
         }
+    }
+    FormSearchCheckURL(Params: string) {
+        const searchParams = new URLSearchParams(Params);
+        if (!!searchParams.get("Categories") && !!searchParams.get("Search")) {
+            return ({
+                Search: `${searchParams.get("Categories")}`,
+                Category: `${searchParams.get("Search")}`
+            });
+        } else {
+            return ({
+                Search: "",
+                Category: "All"
+            });
+        }
+    }
+    ProductCheckURL(Params: string): false | string {
+        const searchParams = new URLSearchParams(Params);
+        const numberSeaPar = +`${searchParams.get("Length")}`;
+        if (Number.isInteger(numberSeaPar) || numberSeaPar >= 0) {
+            return false;
+        } else { return `${searchParams.get("Length")}`; }
     }
 }
 export default new CheckURL();
