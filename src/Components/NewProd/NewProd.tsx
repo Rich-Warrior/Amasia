@@ -7,6 +7,7 @@ import Banner from "../Banner";
 import { newProdImg, newProdCateg } from "./NewProdArray";
 import useBanner from "../../Containers/useHooks/useBanner";
 import ProductList from "../ProductList";
+import objProcesRequest from "../../Containers/Class/ProcessingRequest";
 import { faceProduct } from "../../Type/Interface";
 
 const NewProd: FC<RouteComponentProps<{}>> = ({ match }) => {
@@ -22,38 +23,24 @@ const NewProd: FC<RouteComponentProps<{}>> = ({ match }) => {
 
   useEffect(bannResetValue, [match]);
   useEffect(() => {
-    const abortController = new AbortController();
-    const signal = abortController.signal;
     (async () => {
       setArrProd([]);
       setResError("");
-      document.title = `Hat Jacket Pants Shoes Suit | Amasia`;
-      try {
-        const Res = await fetch(
-          `https://doo0022.firebaseio.com/New/${bannArr}.json`,
-          {
-            signal: signal
-          }
-        );
-        const ResArr:faceProduct[] | null = await Res.json();
-        if (!Res.ok || !ResArr) {
-          throw new Error("Page Not Found 404");
-        }
-         setArrProd(
-          ResArr.map((ProdArr: faceProduct, ProdIndex) => (
+      const Prod:faceProduct[] | string = await objProcesRequest.ServerRequest(`${objProcesRequest.newURL}/New/${bannArr[0]}.json`);
+      if (Array.isArray(Prod)) {
+        document.title = `Hat Jacket Pants Shoes Suit | Amasia`;
+        setArrProd(
+          Prod.map((ProdArr: faceProduct, ProdIndex) => (
             <Fragment key={`${ProdIndex / 10 + ProdIndex}`}>
               <ProductList arrListProd={ProdArr} />
             </Fragment>
-          ))
-        );
-      } catch (error) {
-        if (error.name !== "AbortError") {
-          setResError(error.message);
-        }
+          )))
+      } else if (Prod !== "AbortError") {
+        setResError(Prod);
       }
     })();
     return () => {
-      abortController.abort();
+      objProcesRequest.Abort();
     };
   }, [match, bannArr]);
 

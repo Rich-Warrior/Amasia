@@ -16,19 +16,19 @@ const CategorySearch: FC<RouteComponentProps<{ PageList: string }>> = ({
   const [page, setPage] = useState({ Page: 0, ListPage: 15, SearchValue: "", Params: "" });
 
   useEffect(() => {
-    const [PageList, path, url] = [match.params.PageList, match.path, match.url];
-    const checkResponseURL = objCheckURL.CategoryCheckURL(PageList, path, url);
+    const [params, path, url] = [match.params.PageList, match.path, match.url];
+    const checkResponseURL = objCheckURL.CategoryCheckURL(params, path, url);
     if (checkResponseURL) {
       (async () => {
         const { Page, ListPage, SearchValue, Categories } = checkResponseURL;
         setResError("");
         setArrProd([]);
-        const Prod = await objProcesRequest.ServerRequest(Categories);
-        if (typeof Prod === "object") {
+        const Prod: faceProduct[] | string = await objProcesRequest.ServerRequest(`${objProcesRequest.headURL}${Categories}`);
+        if (Array.isArray(Prod)) {
           document.title = SearchValue;
           setPage({ Page, ListPage, SearchValue: `Categories ${SearchValue}`, Params: Categories });
           setArrProd(Prod);
-        } else if (Prod !== "") {
+        } else if (Prod !== "AbortError") {
           setResError(Prod);
         }
       })();

@@ -5,6 +5,7 @@ import HandlerErr from "../HandlerErr";
 import Loding from "../Loding";
 import objCheckURL from "../../Containers/Class/CheckURL"
 import FlipThroList from "../FlipThroList";
+import objProcesRequest from "../../Containers/Class/ProcessingRequest";
 import { faceProduct } from "../../Type/Interface";
 
 const Product: FC<RouteComponentProps<{ product: string }>> = ({ match }) => {
@@ -16,47 +17,34 @@ const Product: FC<RouteComponentProps<{ product: string }>> = ({ match }) => {
   const [saizCateg, setSaizCateg] = useState<string>("");
 
   useEffect(() => {
-    const abortController = new AbortController();
-    const signal = abortController.signal;
-    const checkResponseURL = objCheckURL.ProductCheckURL(match.params.product);
+    const [params, url] = [match.params.product, match.url]
+    const checkResponseURL = objCheckURL.ProductCheckURL(params, url);
     if (checkResponseURL) {
       (async () => {
         setResError("");
         setProd(undefined);
-        try {
-          const Res = await fetch(
-            `https://foo0022.firebaseio.com//${match.url.replace(
-              `Product/${match.params.product}`,
-              ""
-            )}${checkResponseURL}.json`,
-            { signal: signal }
-          );
-          const Product: faceProduct | null = await Res.json();
-          if (!Res.ok || !Product) {
-            throw new Error("Page Not Found 404");
-          }
-          document.title = `${Product.title}`;
-          await setProd(Product);
+        const Prod: faceProduct | string = await objProcesRequest.ServerRequest(`${objProcesRequest.headURL}${checkResponseURL}`);
+        if (typeof Prod === "object") {
+          document.title = `${Prod.title}`;
+          setProd(Prod);
           setListImg(
-            Product.src
+            Prod.src
               .map((value, index) => (
                 <img key={`${value}${0.1 + index}`}
-                  src={`/${value}`} alt={Product.title}
+                  src={`/${value}`} alt={Prod.title}
                   height={"64px"} width={"64px"}
                   onClick={() => {
                     setListIndx(index);
-                    Product.color.length >= index &&
-                      setColorCateg(Product.color[index]);
+                    Prod.color.length >= index &&
+                      setColorCateg(Prod.color[index]);
                   }} />)));
-        } catch (error) {
-          if (error.name !== "AbortError") {
-            setResError(error.message);
-          }
+        } else if (Prod !== "AbortError") {
+          setResError(Prod);
         }
       })();
     } else { setResError("Page Not Found 404"); }
     return () => {
-      abortController.abort();
+      objProcesRequest.Abort();
     };
   }, [match]);
   if (resError !== "") {
@@ -71,7 +59,7 @@ const Product: FC<RouteComponentProps<{ product: string }>> = ({ match }) => {
         <h1 itemProp={"name"}>{prod.title}</h1>
         {listImg.length > 7 ? (
           <FlipThroList yardage={6} arrList={listImg} indxList={listIndx} />
-        ) : <Fragment>{listImg}</Fragment>}
+        ) :  listImg.length > 1 && <Fragment>{listImg}</Fragment>}
         <img
           src={`/${prod.src[listIndx]}`}
           alt={prod.title}

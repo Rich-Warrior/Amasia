@@ -17,7 +17,7 @@ class CheckURL {
         if (boolCheckUrl) { return false; }
         else {
             const Categories = (searchParams.get("Categories") !== "All" && searchParams.get("Categories")) ?
-                `${searchParams.get("Categories")}.json` : ".json";
+                `${searchParams.get("Categories")}/.json` : ".json";
             return ({
                 Page: +`${searchParams.get("Page")}`,
                 ListPage: +`${searchParams.get("ListPage")}`,
@@ -57,8 +57,8 @@ class CheckURL {
         const searchParams = new URLSearchParams(Params);
         if (!!searchParams.get("Categories") && !!searchParams.get("Search")) {
             return ({
-                Search: `${searchParams.get("Categories")}`,
-                Category: `${searchParams.get("Search")}`
+                Search: `${searchParams.get("Search")}`,
+                Category: `${searchParams.get("Categories")}`
             });
         } else {
             return ({
@@ -67,12 +67,18 @@ class CheckURL {
             });
         }
     }
-    ProductCheckURL(Params: string): false | string {
+    ProductCheckURL(Params: string, Url: string): false | string {
         const searchParams = new URLSearchParams(Params);
         const numberSeaPar = +`${searchParams.get("Length")}`;
         if (Number.isInteger(numberSeaPar) || numberSeaPar >= 0) {
+            return `${Url.replace(
+                `Product/${Params}`,
+                ""
+            )}${numberSeaPar}.json`;
+        } else {
             return false;
-        } else { return `${searchParams.get("Length")}`; }
+        }
     }
 }
 export default new CheckURL();
+
