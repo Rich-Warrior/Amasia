@@ -1,12 +1,13 @@
 import React, { FC, Fragment, useEffect, useState } from "react";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 
-import ConveyorProduct from "../ConveyorProduct";
+import ProcessingSearch from "../ProcessingSearch";
 import HandlerErr from "../HandlerErr";
 import Loding from "../Loding";
 import objCheckURL from "../../Containers/Class/CheckURL";
 import objProcesRequest from "../../Containers/Class/ProcessingRequest";
 import { faceProduct } from "../../Type/Interface";
+
 
 const CategorySearch: FC<RouteComponentProps<{ PageList: string }>> = ({
   match
@@ -32,7 +33,7 @@ const CategorySearch: FC<RouteComponentProps<{ PageList: string }>> = ({
           setResError(Prod);
         }
       })();
-    } else { setResError("Page Not Found 404"); }
+    } else { setResError("404"); }
     return () => { objProcesRequest.Abort(); }
 
   }, [match]);
@@ -44,8 +45,8 @@ const CategorySearch: FC<RouteComponentProps<{ PageList: string }>> = ({
 
   return (
     <Fragment>
-      <ConveyorProduct
-        arrConvProd={arrProd}
+      <ProcessingSearch
+        arrRespProduct={arrProd}
         {...page}
       />
     </Fragment>

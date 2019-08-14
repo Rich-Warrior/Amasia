@@ -42,7 +42,7 @@ const Product: FC<RouteComponentProps<{ product: string }>> = ({ match }) => {
           setResError(Prod);
         }
       })();
-    } else { setResError("Page Not Found 404"); }
+    } else { setResError("404"); }
     return () => {
       objProcesRequest.Abort();
     };

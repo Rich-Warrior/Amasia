@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useEffect } from "react";
 
 const useFlippingList = ({ yardage, arrList, indxList }: {
     yardage: number;
@@ -8,7 +8,7 @@ const useFlippingList = ({ yardage, arrList, indxList }: {
     const [flippingListIndx, setFlippingListIndx] = useState<number>(0);
     const [flippingList, setFlippingList] = useState<JSX.Element[]>([]);
 
-    useMemo(() => {
+    useEffect(() => {        ///???????
         const arrStart = Math.floor(indxList / yardage) * yardage;
         if (indxList < arrList.length) {
             setFlippingList(

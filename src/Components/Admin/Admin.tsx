@@ -26,7 +26,6 @@ const Admin = () => {
       <ul>
         {icnUrl}
       </ul>
-
     </Fragment>
   );
 };

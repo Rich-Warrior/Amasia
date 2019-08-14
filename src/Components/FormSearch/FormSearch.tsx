@@ -19,7 +19,7 @@ const FormSearch: FC<RouteComponentProps<{ schProd: string }>> = ({
   }, [schProd]);
 
   return (
-    <form>
+    <Fragment>
       <input
         {...FormSearchInput}
         value={search}
@@ -30,9 +30,7 @@ const FormSearch: FC<RouteComponentProps<{ schProd: string }>> = ({
       />
       <NavLink
         to={`/sch/Categories=${category}&Search=${search}&ListPage=${15}&Page=${1}`}
-        onClick={e => !search && e.preventDefault()}
       >
-        <input type={"submit"} value={"search"} />
       </NavLink>
       <select
         value={category}
@@ -42,7 +40,7 @@ const FormSearch: FC<RouteComponentProps<{ schProd: string }>> = ({
       >
         <Fragment>{FormSearchOption}</Fragment>
       </select>
-    </form>
+    </Fragment>
   );
 };
 

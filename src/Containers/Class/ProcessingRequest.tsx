@@ -11,7 +11,7 @@ class ProcessingRequest {
             const Res = await fetch(`${endURL}`, { signal: this.abortController.signal });
             const Product = await Res.json();
             if (!Res.ok || !Product) {
-                throw new Error("Page Not Found 404");
+                throw new Error("404");
             }
             return Product;
         } catch (error) {

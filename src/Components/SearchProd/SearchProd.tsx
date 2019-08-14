@@ -3,8 +3,8 @@ import { RouteComponentProps, withRouter } from "react-router-dom";
 
 import HandlerErr from "../HandlerErr";
 import Loding from "../Loding";
-import ConveyorProduct from "../ConveyorProduct/ConveyorProduct";
 import NotFound from "../NotFound";
+import ProcessingSearch from "../ProcessingSearch";
 import objCheckURL from "../../Containers/Class/CheckURL"
 import objProcesRequest from "../../Containers/Class/ProcessingRequest";
 import { faceProduct } from "../../Type/Interface";
@@ -35,7 +35,7 @@ const SearchProd: FC<RouteComponentProps<{ schProd: string }>> = ({ match }) => 
         } else { setNothFound(true); setSearchNam(SearchValue); }
 
       })();
-    } else { setResError("Page Not Found 404"); }
+    } else { setResError("404"); }
     return () => { objProcesRequest.Abort(); };
   }, [match]);
 
@@ -49,8 +49,8 @@ const SearchProd: FC<RouteComponentProps<{ schProd: string }>> = ({ match }) => 
 
   return (
     <Fragment>
-      <ConveyorProduct
-        arrConvProd={reqSearch}
+      <ProcessingSearch
+        arrRespProduct={reqSearch}
         {...page}
       />
     </Fragment>

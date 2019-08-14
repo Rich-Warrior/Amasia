@@ -12,8 +12,8 @@ const RouteProj = () => (
   <Fragment>
     <Switch>
       <Route path="/" exact component={RouteHead} />
-       {RouteCollector}
-     <Route path="/sch/:schProd" component={RouteSchProd} />
+      {RouteCollector}
+      <Route path="/sch/:schProd" component={RouteSchProd} />
       <Route path="/Admin" component={Admin} />
       <Route path="/SingUp" component={SingUp} />
       <Route path="*" render={() => <Redirect to="/" />} />

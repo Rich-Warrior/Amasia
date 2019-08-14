@@ -22,7 +22,7 @@ const ProdListItem: FC<faceProduct> = ({
       />
     )}
 
-    {!!price && <span>{price}</span>}
+    {!!price && <span>{`$${price}`}</span>}
     {!!prodState && <span>{prodState}</span>}
     {!!shipping && <span>{shipping}</span>}
     {!!sold && <span>{sold}</span>}

@@ -1,15 +1,12 @@
-import { useState, useMemo } from "react";
+import { useState } from "react";
 
 const useBanner = (array: JSX.Element[] | string[], yardage: number) => {
-  const [bannArr, setBannArr] = useState<JSX.Element[] | string[]>([]);
+  const [bannArr, setBannArr] = useState<JSX.Element[] | string[]>(
+    array.slice(0, yardage)
+  );
   const [bannListIndex, setBannIndex] = useState<number>(1);
 
   const lengthDelAdd = yardage * bannListIndex;
-
-  useMemo(() => {
-    setBannArr(array.slice(0, yardage));
-    setBannIndex(1);
-  }, [array, yardage]);
 
   const bannResetValue = () => {
     setBannArr(array.slice(0, yardage));

@@ -1,7 +1,7 @@
 import React, {
   FC,
   Fragment,
-  useEffect,
+  useMemo,
   useCallback,
   useState
 } from "react";
@@ -51,7 +51,7 @@ const ConveyorProduct: FC<{
       [arrConvProd]
     );
 
-    useEffect(() => {
+    useMemo(() => {
       const BoolPage =
         Page > 0 && Page <= Math.ceil(arrConvProd.length / ListPage);
       const BoolListPage = [15, 30, 70, 140].includes(ListPage);
